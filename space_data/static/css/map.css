@@ -1,0 +1,32 @@
+/* map.css */
+
+/* Устанавливаем высоту карты */
+#map {
+    height: 80vh;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Стили для легенды */
+.legend {
+    background: white;
+    padding: 10px;
+    line-height: 1.5;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+.legend div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.legend-color-box {
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    border: 1px solid #999;
+}
+.leaflet-control-layers {
+    max-height: 200px;
+    overflow-y: auto;
+}

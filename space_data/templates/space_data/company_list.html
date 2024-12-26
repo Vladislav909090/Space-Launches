@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Компании космической отрасли (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы компаний -->
+    <link rel="stylesheet" href="{% static 'css/company_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список космических компаний</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="companiesTable">
+        <thead>
+            <tr>
+                <th data-column="short_name">Краткое название <span class="sort-indicator"></span></th>
+                <th data-column="full_name">Полное название <span class="sort-indicator"></span></th>
+                <th data-column="type_of_organization">Тип организации <span class="sort-indicator"></span></th>
+                <th data-column="country">Страна <span class="sort-indicator"></span></th>
+                <th data-column="founded_year">Год основания <span class="sort-indicator"></span></th>
+                <th data-column="head_title_and_name">Руководитель <span class="sort-indicator"></span></th> <!-- Новое поле -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in companies %}
+            <tr>
+                <td>{{ company.short_name|default:"N/A" }}</td>
+                <td>{{ company.full_name|default:"N/A" }}</td>
+                <td>{{ company.type_of_organization|default:"N/A" }}</td>
+                <td>{{ company.country|default:"N/A" }}</td>
+                <td>{{ company.founded_year|default:"N/A" }}</td>
+                <td>{{ company.head_title_and_name|default:"N/A" }}</td> <!-- Новое поле -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Если вы хотите переместить JavaScript в отдельный файл, выполните следующие шаги -->
+    <script src="{% static 'js/company_list.js' %}"></script>
+{% endblock %}

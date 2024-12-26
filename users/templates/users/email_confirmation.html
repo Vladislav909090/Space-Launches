@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Подтверждение регистрации{% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение специализированного CSS для страницы подтверждения регистрации -->
+    {% comment %} <link rel="stylesheet" href="{% static 'css/email_confirmation.css' %}"> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+<div class="email-confirmation-container">
+    <h2>Подтверждение регистрации</h2>
+    <p>
+        Письмо с инструкциями по подтверждению регистрации было отправлено на вашу электронную почту.
+    </p>
+    <p>
+        Пожалуйста, проверьте ваш почтовый ящик и следуйте инструкциям, чтобы активировать вашу учетную запись.
+    </p>
+</div>
+{% endblock %}

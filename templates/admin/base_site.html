@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Админ-панель{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <!-- Подключение ваших кастомных стилей -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin/custom_admin.css' %}">
+{% endblock %}

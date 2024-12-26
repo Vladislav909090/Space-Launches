@@ -1,0 +1,28 @@
+# Папки и файлы для виртуального окружения
+venv/
+env/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Конфигурации
+*.env
+*.ini
+*.local
+settings.py
+
+# Логи и базы данных
+*.log
+*.sqlite3
+db.sqlite3
+*.bak
+*.sql
+
+# Другие файлы
+*.pot
+*.pyc
+media/launch_pads
+media/rocket_configurations
+media/space_companies
+space_data/management

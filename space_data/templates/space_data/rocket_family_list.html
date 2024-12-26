@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Семейства космических ракет (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы семейства ракет -->
+    <link rel="stylesheet" href="{% static 'css/rocket_family_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список семейств ракет</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="rocketFamiliesTable">
+        <thead>
+            <tr>
+                <th data-column="family_name">Семейство ракет <span class="sort-indicator"></span></th>
+                <th data-column="company">Компания <span class="sort-indicator"></span></th>
+                {% comment %} <th data-column="description">Описание <span class="sort-indicator"></span></th> {% endcomment %}
+                <th data-column="wiki_url">Wiki URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for family in rocket_families %}
+            <tr>
+                <td>{{ family.family_name }}</td>
+                <td>{{ family.company.short_name|default_if_none:"N/A" }}</td>
+                {% comment %} <td>{{ family.description|default:"N/A" }}</td> {% endcomment %}
+                <td>
+                    {% if family.wiki_url %}
+                        <a href="{{ family.wiki_url }}" target="_blank" class="wiki-link">Wiki Link</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы семейства ракет -->
+    <script src="{% static 'js/rocket_family_list.js' %}"></script>
+
+    <!-- Встроенный JavaScript для данных -->
+    <script>
+        var rocketFamilies = {{ rocket_families|safe }};
+    </script>
+{% endblock %}
+

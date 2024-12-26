@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Космические запуски
+{% endblock %} 
+
+{% block head_extra %}
+  <!-- Подключение внешнего CSS для страницы launches.html -->
+  <link rel="stylesheet" href="{% static 'css/launches.css' %}">
+{% endblock %} 
+
+{% block content %}
+  <!-- Панель пагинации сверху -->
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="large-gap">&laquo;</a> <!-- Символ для "Первая" -->
+      <a href="?page={{ page_obj.previous_page_number }}" class="large-gap">&larr;</a> <!-- Символ для "Назад" -->
+    {% else %}
+      <span class="placeholder large-gap">&laquo;</span> <!-- Символ для "Первая" -->
+      <span class="placeholder large-gap">&larr;</span> <!-- Символ для "Назад" -->
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="active">{{ num }}</span>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="large-gap">&rarr;</a> <!-- Символ для "Вперед" -->
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="large-gap">&raquo;</a> <!-- Символ для "Последняя" -->
+    {% else %}
+      <span class="placeholder large-gap">&rarr;</span> <!-- Символ для "Вперед" -->
+      <span class="placeholder large-gap">&raquo;</span> <!-- Символ для "Последняя" -->
+    {% endif %}
+  </div>
+
+  <div class="cards-wrapper">
+    <!-- Карточки миссий -->
+    {% for launch in page_obj %}
+      <div class="card
+        {% if launch.flight_status == 'Success' %}
+          card-success
+        {% elif launch.flight_status == 'Partial Failure' %}
+          card-partial
+        {% elif launch.flight_status == 'Failure' %}
+          card-failed
+        {% endif %}
+      ">
+        <div class="image-wrapper">
+          <img src="{{ MEDIA_URL }}{{ launch.rocket_image_url|default:'default_rocket_configurations.png' }}" alt="Фото ракеты" class="card-img" />
+          {% if launch.company_logo_url %}
+            <img src="{{ MEDIA_URL }}{{ launch.company_logo_url|default:'default_logo.png' }}" alt="Логотип компании" class="logo-overlay" />
+          {% endif %}
+          <div class="company-badge">{{ launch.rocket_config.vehicle_family.company.short_name|default:"Неизвестная компания" }}</div>
+        </div>
+        <div class="card-content">
+          <p class="mission">
+            <span class="mission-highlight 
+              {% if launch.flight_status == 'Success' %}
+                mission-success
+              {% elif launch.flight_status == 'Partial Failure' %}
+                mission-partial
+              {% elif launch.flight_status == 'Failure' %}
+                mission-failed
+              {% else %}
+                mission-default
+              {% endif %}">
+              {{ launch.name|default:"Название миссии неизвестно" }}
+            </span>
+          </p>
+          <p class="rocket-config-name">Ракета носитель: {{ launch.rocket_config.modification_name|default:"Неизвестно" }}</p>
+          <p class="date-time">
+            Дата и время: 
+            {{ launch.day|default:"__" }}-{{ launch.month|default:"__" }}-{{ launch.year|default:"____" }}
+            {% if launch.hour is not None and launch.minute is not None %}
+                {{ launch.hour|stringformat:"02d" }}:{{ launch.minute|stringformat:"02d" }} 
+                GMT{{ tz_offset }}
+            {% endif %}
+          </p>
+          
+          <p class="launch-site">Площадка: {{ launch.launch_pad.full_name|default:"Неизвестно" }}</p>
+          <a href="{% if launch.slug %}/space_data/launch-info/{{ launch.slug }}{% else %}#{% endif %}" 
+            class="btn-more" 
+            {% if not launch.slug %}style="background-color: #ccc; cursor: not-allowed;"{% endif %}>
+            Подробнее
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Панель пагинации снизу -->
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="large-gap">&laquo;</a> <!-- Символ для "Первая" -->
+      <a href="?page={{ page_obj.previous_page_number }}" class="large-gap">&larr;</a> <!-- Символ для "Назад" -->
+    {% else %}
+      <span class="placeholder large-gap">&laquo;</span> <!-- Символ для "Первая" -->
+      <span class="placeholder large-gap">&larr;</span> <!-- Символ для "Назад" -->
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="active">{{ num }}</span>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="large-gap">&rarr;</a> <!-- Символ для "Вперед" -->
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="large-gap">&raquo;</a> <!-- Символ для "Последняя" -->
+    {% else %}
+      <span class="placeholder large-gap">&rarr;</span> <!-- Символ для "Вперед" -->
+      <span class="placeholder large-gap">&raquo;</span> <!-- Символ для "Последняя" -->
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Группы полезной нагрузки (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы групп полезной нагрузки -->
+    <link rel="stylesheet" href="{% static 'css/payload_group_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список полезной нагрузки</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="payloadGroupsTable">
+        <thead>
+            <tr>
+                <th data-column="name">Имя <span class="sort-indicator"></span></th>
+                <th data-column="mission">Миссия <span class="sort-indicator"></span></th>
+                <th data-column="orbit_type">Тип орбиты <span class="sort-indicator"></span></th>
+                <th data-column="payload_count">Количество <span class="sort-indicator"></span></th>
+                <th data-column="mass">Масса (кг) <span class="sort-indicator"></span></th>
+                {% comment %} <th data-column="description">Описание <span class="sort-indicator"></span></th> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in payload_groups %}
+            <tr>
+                <td>{{ group.name|default:"N/A" }}</td>
+                <td>{{ group.mission.name|default:"N/A" }}</td>
+                <td>{{ group.orbit_type|default:"N/A" }}</td>
+                <td>{{ group.payload_count|default:"N/A" }}</td>
+                <td>{{ group.mass|floatformat:2|default:"N/A" }}</td>
+                {% comment %} <td>{{ group.description|default:"N/A" }}</td> {% endcomment %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы групп полезной нагрузки -->
+    <script src="{% static 'js/payload_group_list.js' %}"></script>
+{% endblock %}

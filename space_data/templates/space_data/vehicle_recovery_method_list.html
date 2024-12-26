@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Средства спасения (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы средств спасения -->
+    <link rel="stylesheet" href="{% static 'css/vehicle_recovery_method_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список средств спасения</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="recoveryMethodsTable">
+        <thead>
+            <tr>
+                <th data-column="short_name">Коротное имя <span class="sort-indicator"></span></th>
+                <th data-column="full_name">Полное имя <span class="sort-indicator"></span></th>
+                <th data-column="type">Способ <span class="sort-indicator"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for method in vehicle_recovery_methods %}
+            <tr>
+                <td>{{ method.short_name|default:"N/A" }}</td>
+                <td>{{ method.full_name|default:"N/A" }}</td>
+                <td>{{ method.type|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы средств спасения -->
+    <script src="{% static 'js/vehicle_recovery_method_list.js' %}"></script>
+{% endblock %}

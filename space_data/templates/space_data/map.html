@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Карта стартовых площадок{% endblock %}
+
+{% block head_extra %}
+    <!-- Подключаем стили Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <!-- Подключаем стили для кластеризации -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+    />
+
+    <!-- Подключение внешнего CSS -->
+    <link rel="stylesheet" href="{% static 'css/map.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Карта стартовых площадок</h1>
+    <div id="map"></div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключаем скрипты Leaflet -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     
+    ></script>
+
+    <!-- Подключаем скрипты для кластеризации -->
+    <script
+      src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+     
+    ></script>
+
+    <!-- Встроенный JavaScript для данных карты -->
+    <script>
+        var launchPads = {{ launch_pads|safe }};
+    </script>
+
+    <!-- Подключение внешнего JavaScript -->
+    <script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

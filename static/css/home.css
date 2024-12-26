@@ -1,0 +1,205 @@
+/* home.css */
+
+/* Информационный блок для незарегистрированных пользователей */
+.info-block {
+  width: 100%;
+  max-width: 800px;
+  background-color: #4d7586;
+  color: #fff;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto; /* Центрирование блока */
+}
+
+/* Обертка для ссылки регистрации */
+.register-link-wrapper {
+  margin-top: 10px; /* Отступ сверху для разделения текста и ссылки */
+  text-align: center; /* Центрирование ссылки */
+}
+
+/* Стили для ссылки регистрации */
+.register-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #e96b17;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.register-link:hover {
+  background-color: #e6ad00;
+  transform: translateY(-2px); /* Легкое поднятие при наведении */
+}
+
+/* Обертка для карточек */
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 70px;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: stretch;
+}
+
+/* Контейнер для секций (прошедшие и будущие миссии) */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-basis: 45%;
+  max-width: 350px;
+  align-items: stretch;
+}
+
+.container h2 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Стили для карточек (прошедшие и будущие миссии) */
+/* Эти стили уже присутствуют в base.css, поэтому их можно удалить из home.css, чтобы избежать дублирования */
+
+/* Логотип компании поверх изображения ракеты */
+.logo-overlay {
+  position: absolute;
+  bottom: 20px; /* Отступ снизу */
+  right: 20px; /* Отступ от правого края до центра логотипа */
+  width: 100px; /* Увеличенная ширина */
+  max-width: 25%; /* Увеличенная максимальная ширина */
+  height: auto; /* Автоматическая высота для сохранения пропорций */
+  object-fit: contain; /* Сохранение пропорций логотипа */
+  z-index: 4; /* Поверх всех остальных элементов */
+  filter: drop-shadow(0 0 20px white); /* Добавляет белую подсветку */
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 0;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.card:hover .card-img {
+  transform: scale(1.05);
+}
+
+.company-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 16px;
+  z-index: 3;
+}
+
+.card-content {
+  padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mission {
+  font-weight: bold;
+  font-size: 18px;
+  position: relative;
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+
+.mission::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  background-color: #555;
+  margin-top: 5px;
+}
+
+.rocket-config-name,
+.date-time,
+.launch-site {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.btn-more {
+  display: inline-block;
+  margin-top: auto;
+  padding: 10px 15px;
+  background-color: #ff4343;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-more:hover {
+  background-color: #964343;
+}
+
+/* Адаптивные отступы для карточек */
+@media (max-width: 1200px) {
+  .cards-wrapper {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 900px) {
+  .cards-wrapper {
+    gap: 20px;
+  }
+
+  .container h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-basis: 45%;
+    max-width: none;
+  }
+
+  .cards-wrapper {
+    gap: 10px;
+  }
+}

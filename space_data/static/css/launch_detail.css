@@ -1,0 +1,351 @@
+/* launch_detail.css */
+
+/* Сброс стандартных отступов и полей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Стили для тела страницы */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+/* Основной контент */
+.content {
+    flex: 1;
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    background-color: #f5f5f5;
+}
+
+/* Заголовки */
+h1, h2, h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+p {
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+/* Секция */
+.section {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+}
+
+.section h1, .section h2 {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 5px;
+}
+
+/* Убираем дополнительный паддинг справа для заголовка секции */
+.section h1 {
+    padding-right: 150px;
+}
+
+/* Информация о компании */
+.company-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Название компании */
+.company-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+/* Социальные ссылки */
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a img {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.3s;
+}
+
+.social-links a img:hover {
+    transform: scale(1.2);
+}
+
+/* Подсветка статуса миссии */
+.mission-highlight {
+    border: 2px solid transparent;
+}
+
+.mission-success {
+    border-color: rgba(0, 128, 0, 0.5);
+    box-shadow: 0 0 40px rgba(0, 128, 0, 0.5);
+}
+
+.mission-partial {
+    border-color: rgba(255, 165, 0, 0.5);
+    box-shadow: 0 0 40px rgba(255, 165, 0, 0.5);
+}
+
+.mission-failed {
+    border-color: rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+}
+
+.mission-default {
+    border-color: rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 40px rgba(192, 192, 192, 0.5);
+}
+
+/* Кнопки-ссылки */
+.highlight {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.video-text {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff0000;
+}
+
+.video-text:hover {
+    background-color: #c0392b;
+}
+
+.wiki-text {
+    background-color: #2980b9;
+}
+
+.wiki-text:hover {
+    background-color: #1f618d;
+}
+
+.map-text {
+    margin-top: 15px;
+    background-color: #27ae60;
+}
+
+.map-text:hover {
+    background-color: #1e8449;
+}
+
+/* Контейнеры */
+.content-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Изображения */
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    flex-shrink: 0;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rocket-images-container {
+    width: 350px;
+    height: 500px;
+}
+
+/* Стили для изображений ракеты */
+.rocket-images {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s;
+    display: none;
+}
+
+.rocket-images.active {
+    display: block;
+}
+
+/* Стили для контейнера изображений стартовой площадки */
+.launch-pad-images-container {
+    width: 350px;
+    height: 350px;
+}
+
+.rocket-images,
+.launch-pad-images {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.rocket-images.active,
+.launch-pad-images.active {
+    display: block;
+}
+
+/* Стрелки навигации для изображений */
+.clickable-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.clickable-area.left {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0));
+}
+
+.clickable-area.right {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0));
+}
+
+.image-container:hover .clickable-area.left {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0));
+}
+
+.image-container:hover .clickable-area.right {
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0));
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    color: #ffffff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    pointer-events: none;
+}
+
+.arrow.left {
+    left: 10px;
+}
+
+.arrow.right {
+    right: 10px;
+}
+
+/* Стили для деталей */
+.details {
+    flex: 1;
+    color: #2c3e50;
+}
+
+.details p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* Методы возврата */
+.recovery-methods .recovery-method {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.recovery-method::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 4px;
+    background-color: currentColor;
+}
+
+.recovery-success {
+    color: #27ae60;
+}
+
+.recovery-partial {
+    color: #f39c12;
+}
+
+.recovery-failed {
+    color: #e74c3c;
+}
+
+.recovery-default {
+    color: #95a5a6;
+}
+
+/* Полезная нагрузка */
+.payload-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .content-flex {
+        flex-direction: column;
+    }
+
+    .image-container {
+        width: 100%;
+    }
+    
+    .rocket-images-container {
+        height: 350px;
+    }
+
+    .clickable-area {
+        width: 10%;
+    }
+}
+
+@media (max-width: 576px) {
+    .section {
+        padding: 20px;
+    }
+
+    .highlight {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .arrow {
+        font-size: 30px;
+    }
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Транспортные средства (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы транспортных средств -->
+    <link rel="stylesheet" href="{% static 'css/vehicle_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список многоразовых транспортных средств</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="vehiclesTable">
+        <thead>
+            <tr>
+                <th data-column="name">Имя <span class="sort-indicator"></span></th>
+                <th data-column="vehicle_type">Тип ТС <span class="sort-indicator"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.name|default:"N/A" }}</td>
+                <td>{{ vehicle.vehicle_type|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы транспортных средств -->
+    <script src="{% static 'js/vehicle_list.js' %}"></script>
+{% endblock %}

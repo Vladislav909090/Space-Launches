@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {{ mission.name }} - детали миссии
+{% endblock %}
+
+{% block head_extra %}
+  <!-- Подключение внешнего CSS для страницы launch_detail.html -->
+  <link rel="stylesheet" href="{% static 'css/launch_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <!-- Блок обзора миссии с подсветкой статуса -->
+    <div class="section mission-overview mission-highlight 
+        {% if mission.flight_status == 'Success' %}
+            mission-success
+        {% elif mission.flight_status == 'Partial Failure' %}
+            mission-partial
+        {% elif mission.flight_status == 'Failure' %}
+            mission-failed
+        {% else %}
+            mission-default
+        {% endif %}
+    ">
+        <h1>Миссия: {{ mission.name }}</h1>
+        <div class="company-info">
+            {% if company %}
+                <p class="company-name">Компания: {{ company.short_name }}</p>
+                <!-- Социальные ссылки -->
+                <div class="social-links">
+                    {% for resource in company.internet_resources.all %}
+                        {% if resource.resource_type == 'twitter' %}
+                            <a href="{{ resource.url }}" target="_blank">
+                                <img src="https://img.icons8.com/ios-filled/50/1DA1F2/twitter.png" alt="Twitter">
+                            </a>
+                        {% elif resource.resource_type == 'instagram' %}
+                            <a href="{{ resource.url }}" target="_blank">
+                                <img src="https://img.icons8.com/ios-filled/50/E4405F/instagram-new.png" alt="Instagram">
+                            </a>
+                        {% elif resource.resource_type == 'youtube' %}
+                            <a href="{{ resource.url }}" target="_blank">
+                                <img src="https://img.icons8.com/ios-filled/50/FF0000/youtube-play.png" alt="YouTube">
+                            </a>
+                        {% elif resource.resource_type == 'website' %}
+                            <a href="{{ resource.url }}" target="_blank">
+                                <img src="https://img.icons8.com/ios-filled/50/3498db/internet.png" alt="Website">
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <p><strong>Статус:</strong> {{ mission.flight_status|default:"Неизвестно" }}</p>
+        {% if launch_date %}
+            <p><strong>Дата запуска:</strong> {{ launch_date }} {% if tz_offset %}GMT{{ tz_offset }}{% endif %}</p>
+        {% endif %}
+
+        {% if mission.description %}
+            <p><strong>Описание:</strong> {{ mission.description }}</p>
+        {% endif %}
+        {% if mission.video_url %}
+            <a href="{{ mission.video_url }}" target="_blank" class="highlight video-text">Смотреть видео</a>
+        {% endif %}
+    </div>
+    
+    <!-- Блок с деталями ракеты -->
+    {% if rocket_config %}
+    <div class="section rocket-summary">
+        <h2>Ракета-носитель</h2>
+        <div class="content-flex">
+            {% if rocket_images %}
+                <div class="image-container rocket-images-container">
+                    {% if rocket_images|length > 1 %}
+                        <div class="clickable-area left" onclick="prevImage('rocket-images')"></div>
+                        <span class="arrow left">&#10094;</span>
+                        {% for image in rocket_images %}
+                            <img class="rocket-images {% if forloop.first %}active{% endif %}" src="{{ MEDIA_URL }}{{ image.url }}" alt="Ракета Изображение {{ forloop.counter }}">
+                        {% endfor %}
+                        <div class="clickable-area right" onclick="nextImage('rocket-images')"></div>
+                        <span class="arrow right">&#10095;</span>
+                    {% else %}
+                        <img class="rocket-images active" src="{{ MEDIA_URL }}{{ rocket_images.0.url }}" alt="Ракета Изображение">
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="image-container rocket-images-container">
+                    <img class="rocket-images active" src="{{ MEDIA_URL }}default_rocket_configurations.png" alt="Изображение ракеты по умолчанию">
+                </div>
+            {% endif %}
+            <div class="details">
+                {% if rocket_config.modification_name %}
+                    <p><strong>Название модификации:</strong> {{ rocket_config.modification_name }}</p>
+                {% endif %}
+                {% if rocket_config.vehicle_family %}
+                    <p><strong>Семейство:</strong> {{ rocket_config.vehicle_family.family_name }}</p>
+                {% endif %}
+                {% if rocket_config.manufacturer %}
+                    <p><strong>Производитель:</strong> {{ rocket_config.manufacturer.name }}</p>
+                {% endif %}
+                {% if rocket_config.price %}
+                    <p><strong>Цена:</strong> {{ rocket_config.price }} USD</p>
+                {% endif %}
+                {% if rocket_config.launch_thrust %}
+                    <p><strong>Тяга:</strong> {{ rocket_config.launch_thrust }} kN</p>
+                {% endif %}
+                {% if rocket_config.payload_mass_leo %}
+                    <p><strong>Полезная нагрузка на LEO:</strong> {{ rocket_config.payload_mass_leo }} кг</p>
+                {% endif %}
+                {% if rocket_config.payload_mass_gto %}
+                    <p><strong>Полезная нагрузка на GTO:</strong> {{ rocket_config.payload_mass_gto }} кг</p>
+                {% endif %}
+                {% if rocket_config.stages %}
+                    <p><strong>Количество ступеней:</strong> {{ rocket_config.stages }}</p>
+                {% endif %}
+                {% if rocket_config.side_boosters %}
+                    <p><strong>Боковые ускорители:</strong> {{ rocket_config.side_boosters }}</p>
+                {% endif %}
+                {% if rocket_config.rocket_height %}
+                    <p><strong>Высота ракеты:</strong> {{ rocket_config.rocket_height }} м</p>
+                {% endif %}
+                {% if rocket_config.fairing_diameter %}
+                    <p><strong>Диаметр обтекателя:</strong> {{ rocket_config.fairing_diameter }} м</p>
+                {% endif %}
+                {% if rocket_config.fairing_height %}
+                    <p><strong>Высота обтекателя:</strong> {{ rocket_config.fairing_height }} м</p>
+                {% endif %}
+                <p><strong>Повторное использование:</strong> {% if rocket_config.reusable %}Да{% else %}Нет{% endif %}</p>
+                {% if rocket_config.status %}
+                    <p><strong>Статус:</strong> {{ rocket_config.status }}</p>
+                {% endif %}
+                {% if rocket_config.wiki_url %}
+                    <a href="{{ rocket_config.wiki_url }}" target="_blank" class="highlight wiki-text">Подробнее на Wiki</a>
+                {% endif %}
+            </div>            
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Блок с методами возврата -->
+    {% if recovery_methods %}
+    <div class="section recovery-methods">
+        <h2>Возвраты</h2>
+        {% for recovery in recovery_methods %}
+            <div class="recovery-method 
+                {% if recovery.recovery_result == 'Success' %}
+                    recovery-success
+                {% elif recovery.recovery_result == 'Partial Failure' %}
+                    recovery-partial
+                {% elif recovery.recovery_result == 'Failure' %}
+                    recovery-failed
+                {% else %}
+                    recovery-default
+                {% endif %}
+            ">
+                {% if recovery.vehicle %}
+                    <p><strong>Транспортное средство:</strong> {{ recovery.vehicle.name }} - {{ recovery.vehicle.vehicle_type }}</p>
+                {% endif %}
+                {% if recovery.recovery_method %}
+                    <p><strong>Способ:</strong> {{ recovery.recovery_method.full_name }} - {{ recovery.recovery_method.type }}</p>
+                {% endif %}
+                {% if recovery.recovery_result %}
+                    <p><strong>Результат:</strong> {{ recovery.recovery_result }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Блок с информацией о полезной нагрузке -->
+    {% if payloads %}
+    <div class="section payload-info">
+        <h2>Полезная нагрузка</h2>
+        {% for payload in payloads %}
+            <div class="payload-item">
+                <p><strong>Название:</strong> {{ payload.name }}</p>
+                {% if payload.payload_type %}
+                    <p><strong>Тип:</strong> {{ payload.payload_type }}</p>
+                {% endif %}
+                {% if payload.orbit_type %}
+                    <p><strong>Орбита:</strong> {{ payload.orbit_type }}</p>
+                {% endif %}
+                {% if payload.count %}
+                    <p><strong>Количество:</strong> {{ payload.count }}</p>
+                {% endif %}
+                {% if payload.mass %}
+                    <p><strong>Общая масса:</strong> {{ payload.mass }} кг</p>
+                {% endif %}
+                {% if payload.description %}
+                    <p><strong>Описание:</strong> {{ payload.description }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Блок со стартовой площадкой -->
+    {% if launch_pad %}
+    <div class="section launch-pad">
+        <h2>Стартовая площадка</h2>
+        <div class="content-flex">
+            {% if launch_pad_images %}
+                <div class="image-container launch-pad-images-container">
+                    {% if launch_pad_images|length > 1 %}
+                        <div class="clickable-area left" onclick="prevImage('launch-pad-images')"></div>
+                        <span class="arrow left">&#10094;</span>
+                        {% for image in launch_pad_images %}
+                            <img class="launch-pad-images {% if forloop.first %}active{% endif %}" src="{{ MEDIA_URL }}{{ image.url }}" alt="Стартовая Площадка Изображение {{ forloop.counter }}">
+                        {% endfor %}
+                        <div class="clickable-area right" onclick="nextImage('launch-pad-images')"></div>
+                        <span class="arrow right">&#10095;</span>
+                    {% else %}
+                        <img class="launch-pad-images active" src="{{ MEDIA_URL }}{{ launch_pad_images.0.url }}" alt="Стартовая Площадка Изображение">
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="image-container launch-pad-images-container">
+                    <img class="launch-pad-images active" src="{{ MEDIA_URL }}default_launch_pads.png" alt="Изображение стартовой площадки по умолчанию">
+                </div>
+            {% endif %}
+            <div class="details">
+                <p><strong>Местоположение:</strong> {{ launch_pad.full_name }}</p>
+                {% if launch_pad.status %}
+                    <p><strong>Статус:</strong> {{ launch_pad.status }}</p>
+                {% endif %}
+                {% if launch_pad.latitude and launch_pad.longitude %}
+                    <p><strong>Координаты:</strong> {{ launch_pad.latitude }}°, {{ launch_pad.longitude }}°</p>
+                    <a href="https://www.google.com/maps?q={{ launch_pad.latitude|stringformat:"f" }},{{ launch_pad.longitude|stringformat:"f" }}" target="_blank" class="highlight map-text">Посмотреть на карте</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function nextImage(className) {
+        const images = document.querySelectorAll(`.${className}`);
+        let currentIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+        if (currentIndex === -1) return;
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+    }
+
+    function prevImage(className) {
+        const images = document.querySelectorAll(`.${className}`);
+        let currentIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+        if (currentIndex === -1) return;
+        images[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        images[currentIndex].classList.add('active');
+    }
+</script>
+{% endblock %}

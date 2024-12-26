@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% comment %} {% load static %}
+    <!-- Подключение внешнего CSS-файла -->
+    <link href="{% static 'css/email_confirmation_sent.css' %}" rel="stylesheet"> {% endcomment %}
+    <style>
+        /* Подключение шрифта Roboto */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        /* Стили для тела письма */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Контейнер письма */
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px; /* Увеличили отступы для большего пространства */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Содержимое письма */
+        .content {
+            padding: 20px 0;
+            text-align: left;
+        }
+
+        /* Заголовок письма */
+        .content h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Параграфы с текстом */
+        .content p {
+            font-size: 16px;
+            line-height: 1.6; /* Увеличен межстрочный интервал для удобства чтения */
+            margin-bottom: 20px; /* Добавлены отступы между абзацами */
+        }
+
+        /* Контейнер кнопки */
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Кнопка */
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #2980b9;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Эффект при наведении на кнопку */
+        .button:hover {
+            background-color: #1f6f91;
+        }
+
+        /* Футер письма */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+            padding-top: 30px;
+            border-top: 1px solid #dddddd;
+        }
+
+        /* Сообщение о несогласии */
+        .disclaimer {
+            font-size: 14px;
+            text-align: center;
+            color: #999;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="content">
+            <h2>Здравствуйте, {{ user.username }}!</h2>
+            <p>Спасибо за регистрацию на нашем сайте! Мы рады приветствовать вас в нашем сообществе.</p>
+            <p>Пожалуйста, подтвердите ваш адрес электронной почты, нажав на кнопку ниже:</p>
+            <div class="button-container">
+                <a href="{{ confirm_url }}" class="button">Подтвердить регистрацию</a>
+            </div>
+            <p class="disclaimer">Если вы не регистрировались на нашем сайте, просто проигнорируйте это письмо.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ current_year }} Dalv.</p>
+        </div>
+    </div>
+</body>
+</html>

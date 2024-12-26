@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Конфигурации ракет (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы конфигураций ракет -->
+    <link rel="stylesheet" href="{% static 'css/rocket_config_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список конфигураций ракет</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="rocketConfigurationsTable">
+        <thead>
+            <tr>
+                <th data-column="modification_name">Название модификации <span class="sort-indicator"></span></th>
+                <th data-column="manufacturer">Производитель <span class="sort-indicator"></span></th>
+                <th data-column="status">Статус</th>
+                <th data-column="price">Цена (USD) <span class="sort-indicator"></span></th>
+                <th data-column="launch_thrust">Тяга при запуске (kN) <span class="sort-indicator"></span></th>
+                <th data-column="payload_mass_leo">Полезная нагрузка на НОО (kg) <span class="sort-indicator"></span></th>
+                <th data-column="payload_mass_gto">Полезная нагрузка на ГПО (kg) <span class="sort-indicator"></span></th>
+                <th data-column="rocket_height">Высота ракеты (m) <span class="sort-indicator"></span></th>
+                <th data-column="reusable">Многоразовость</th>
+                <th data-column="stages">Ступени <span class="sort-indicator"></span></th>
+                <th data-column="side_boosters">Боковые ускорители <span class="sort-indicator"></span></th>
+                <th data-column="fairing_diameter">Диаметр обтекателя (m) <span class="sort-indicator"></span></th>
+                <th data-column="fairing_height">Высота обтекателя (m) <span class="sort-indicator"></span></th>
+                <th data-column="wiki_url">Wiki URL</th>
+            </tr>            
+        </thead>
+        <tbody>
+            {% for config in rocket_configs %}
+            <tr>
+                <td>{{ config.modification_name }}</td>
+                <td>{{ config.manufacturer.name|default_if_none:"N/A" }}</td>
+                <td>{{ config.status }}</td>
+                <td>{{ config.price|floatformat:2 }}</td>
+                <td>{{ config.launch_thrust|floatformat:2 }}</td>
+                <td>{{ config.payload_mass_leo|floatformat:2 }}</td>
+                <td>{{ config.payload_mass_gto|floatformat:2 }}</td>
+                <td>{{ config.rocket_height|floatformat:2 }}</td>
+                <td>{{ config.reusable|yesno:"Yes,No" }}</td>
+                <td>{{ config.stages|default:"N/A" }}</td>
+                <td>{{ config.side_boosters|default:"N/A" }}</td>
+                <td>{{ config.fairing_diameter|floatformat:2 }}</td>
+                <td>{{ config.fairing_height|floatformat:2 }}</td>
+                <td>
+                    {% if config.wiki_url %}
+                        <a href="{{ config.wiki_url }}" target="_blank" class="wiki-link">Wiki Link</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="14">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы конфигураций ракет -->
+    <script src="{% static 'js/rocket_config_list.js' %}"></script>
+{% endblock %}

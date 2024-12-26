@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home. Космические пуски
+{% endblock %}
+
+{% block head_extra %}
+<!-- Подключение внешнего CSS для домашней страницы -->
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+<div class="info-block">
+  Добро пожаловать в базу данных Space Launches. Зарегистрируйтесь, чтобы увидеть больше информации о космических пусках и миссиях.
+  <div class="register-link-wrapper">
+    <a href="{% url 'register' %}" class="register-link">Зарегистрироваться</a>
+  </div>
+</div>
+{% endif %}
+
+<div class="cards-wrapper">
+  <!-- Контейнер для прошедших миссий -->
+  <div class="container">
+    <h2>Последние миссии</h2>
+    {% for launch in past_launches %}
+      <div class="card">
+        <div class="image-wrapper">
+          {% if launch.rocket_image_url %}
+            <img src="{{ MEDIA_URL }}{{ launch.rocket_image_url }}" alt="Фото ракеты-носителя" class="card-img" />
+          {% else %}
+            <img src="{{ MEDIA_URL }}default_rocket_configurations.png" alt="Фото ракеты-носителя" class="card-img" />
+          {% endif %}
+
+          {% if launch.company_logo_url %}
+            <img src="{{ MEDIA_URL }}{{ launch.company_logo_url|default:'default_logo.png' }}" alt="Логотип компании" class="logo-overlay" />
+          {% endif %}
+
+          <div class="company-badge">{{ launch.rocket_config.vehicle_family.company.short_name|default:"Неизвестная компания" }}</div>
+        </div>
+        <div class="card-content">
+          <p class="mission">{{ launch.name|default:"Название миссии неизвестно" }}</p>
+          <p class="rocket-config-name">Конфигурация: {{ launch.rocket_config.modification_name|default:"Неизвестная конфигурация" }}</p>
+          <p class="date-time">
+            Дата и время: 
+            {{ launch.day|default:"__" }}-{{ launch.month|default:"__" }}-{{ launch.year|default:"____" }}
+            {% if launch.hour is not None and launch.minute is not None %}
+                {{ launch.hour|stringformat:"02d" }}:{{ launch.minute|stringformat:"02d" }} 
+                GMT{{ tz_offset }}
+            {% endif %}
+          </p>   
+          <p class="launch-site">Площадка: {{ launch.launch_pad.full_name|default:"Неизвестная площадка" }}</p>
+          <a href="{{ launch.video_url|default:'#' }}" class="btn-more" {% if not launch.video_url %}style="background-color: #ccc; cursor: not-allowed;"{% endif %}>
+            Видео
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Контейнер для будущих миссий -->
+  <div class="container">
+    <h2>Ближайшие миссии</h2>
+    {% for launch in future_launches %}
+      <div class="card">
+        <div class="image-wrapper">
+          {% if launch.rocket_image_url %}
+            <img src="{{ MEDIA_URL }}{{ launch.rocket_image_url }}" alt="Фото ракеты-носителя" class="card-img" />
+          {% else %}
+            <img src="{{ MEDIA_URL }}default_rocket_configurations.png" alt="Фото ракеты-носителя" class="card-img" />
+          {% endif %}
+
+          {% if launch.company_logo_url %}
+            <img src="{{ MEDIA_URL }}{{ launch.company_logo_url|default:'default_logo.png' }}" alt="Логотип компании" class="logo-overlay" />
+          {% endif %}
+
+          <div class="company-badge">{{ launch.rocket_config.vehicle_family.company.short_name|default:"Неизвестная компания" }}</div>
+        </div>
+        <div class="card-content">
+          <p class="mission">{{ launch.name|default:"Название миссии неизвестно" }}</p>
+          <p class="rocket-config-name">Конфигурация: {{ launch.rocket_config.modification_name|default:"Неизвестная конфигурация" }}</p>
+          <p class="date-time">
+            Дата и время: 
+            {{ launch.day|default:"__" }}-{{ launch.month|default:"__" }}-{{ launch.year|default:"____" }}
+            {% if launch.hour is not None and launch.minute is not None %}
+                {{ launch.hour|stringformat:"02d" }}:{{ launch.minute|stringformat:"02d" }} 
+                GMT{{ tz_offset }}
+            {% endif %}
+          </p>        
+          <p class="launch-site">Площадка: {{ launch.launch_pad.full_name|default:"Неизвестная площадка" }}</p>
+          <a href="{{ launch.video_url|default:'#' }}" class="btn-more" {% if not launch.video_url %}style="background-color: #ccc; cursor: not-allowed;"{% endif %}>
+            Видео
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

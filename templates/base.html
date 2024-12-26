@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {% load static %}
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <title>{% block title %}Космические пуски{% endblock %}</title>
+
+    <link rel="icon" href="{% static 'images/logo-mars.ico' %}" type="image/x-icon">
+    
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block head_extra %}
+    {% endblock %}
+
+    {% block head %}
+    <!-- Дополнительные стили или скрипты можно добавить здесь -->
+    {% endblock %}
+  </head>
+  <body>
+    <!-- Навигационная панель -->
+    <nav>
+      <div class="nav-left">
+        <div class="logo">
+          <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo-mars.png' %}" alt="Mars Logo">
+          </a>
+        </div>
+
+        <div class="nav-links">
+          <a href="{% url 'space_data:launch_cards' %}" class="highlighted-button {% if request.resolver_match.url_name == 'launch_cards' %}active{% endif %}">Пуски</a>
+    
+          <a href="{% url 'space_data:map_view' %}" class="{% if request.resolver_match.url_name == 'map_view' %}active{% endif %}">Карта</a>
+    
+          <!-- Выпадающее меню "Данные" -->
+          <div class="dropdown">
+            <button class="dropbtn">Данные &#9662;</button>
+            <div class="dropdown-content">
+              <a href="{% url 'space_data:company_list' %}" class="{% if request.resolver_match.url_name == 'company_list' %}active{% endif %}">Компании</a>
+              <a href="{% url 'space_data:rocket_family_list' %}" class="{% if request.resolver_match.url_name == 'rocket_family_list' %}active{% endif %}">Ракетные семейства</a>
+              <a href="{% url 'space_data:rocket_config_list' %}" class="{% if request.resolver_match.url_name == 'rocket_config_list' %}active{% endif %}">Конфигурации ракет</a>
+              <a href="{% url 'space_data:launch_mission_list' %}" class="{% if request.resolver_match.url_name == 'launch_mission_list' %}active{% endif %}">Миссии</a>
+              <a href="{% url 'space_data:payload_group_list' %}" class="{% if request.resolver_match.url_name == 'payload_group_list' %}active{% endif %}">Полезная нагрузка</a>
+              <a href="{% url 'space_data:launch_pad_list' %}" class="{% if request.resolver_match.url_name == 'launch_pad_list' %}active{% endif %}">Стартовые площадки</a>
+              <a href="{% url 'space_data:vehicle_list' %}" class="{% if request.resolver_match.url_name == 'vehicle_list' %}active{% endif %}">Транспортные средства</a>
+              <a href="{% url 'space_data:vehicle_recovery_method_list' %}" class="{% if request.resolver_match.url_name == 'vehicle_recovery_method_list' %}active{% endif %}">Средства спасения</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-info">
+        {% if user.is_authenticated %}
+        <span>{{ user.username }}</span>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Выйти</button>
+        </form>
+        {% else %}
+        <a href="{% url 'register' %}">Регистрация</a>
+        <a href="{% url 'login' %}">Вход</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="content">
+      {% block content %}
+      <!-- Контент страницы -->
+      {% endblock %}
+    </div>
+
+    <!-- Футер страницы -->
+    <footer>
+      <div class="footer-container">
+        <div class="socials">
+          <a href="https://twitter.com/VladislavLozkin" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/twitter.png" alt="Twitter">
+          </a>
+          <a href="https://t.me/DalvLL" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
+          </a>
+          <a href="mailto:amurchik2003@inbox.ru">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/email.png" alt="Email">
+          </a>
+        </div>
+        <div class="footer-bottom">
+          &copy; {% now "Y" %} Space launches. Автор: Ложкин Владислав.
+        </div>
+      </div>
+    </footer>    
+
+    {% block script %}
+    <!-- Скрипты страниц -->
+    {% endblock %}
+  </body>
+</html>

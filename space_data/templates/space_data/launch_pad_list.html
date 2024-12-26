@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Стартовые площадки (список){% endblock %}
+
+{% block head_extra %}
+    <!-- Подключение внешнего CSS для страницы стартовых площадок -->
+    <link rel="stylesheet" href="{% static 'css/launch_pad_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Список стартовых площадок</h1>
+    <button id="downloadCsvButton" class="btn-download">Скачать CSV</button>
+</div>
+<div class="table-container">
+    <table id="launchPadsTable">
+        <thead>
+            <tr>
+                <th data-column="full_name">Полное Название <span class="sort-indicator"></span></th>
+                <th data-column="description">Описание <span class="sort-indicator"></span></th>
+                <th data-column="latitude">Широта</th>
+                <th data-column="longitude">Долгота</th>
+                <th data-column="status">Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pad in launch_pads %}
+            <tr>
+                <td>{{ pad.full_name|default:"N/A" }}</td>
+                <td>{{ pad.description|default:"N/A" }}</td>
+                <td>{{ pad.latitude|floatformat:6|default:"N/A" }}</td>
+                <td>{{ pad.longitude|floatformat:6|default:"N/A" }}</td>
+                <td>{{ pad.status|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Нет доступных данных.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Подключение внешнего JavaScript для страницы стартовых площадок -->
+    <script src="{% static 'js/launch_pad_list.js' %}"></script>
+{% endblock %}
